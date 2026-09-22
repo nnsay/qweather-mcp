@@ -72,7 +72,7 @@ def _dig(obj: object, *keys: str) -> Any:
 
 def _num(value: object) -> float | None:
     try:
-        return float(value)  # type: ignore[arg-type]
+        return float(value)  # ty: ignore[invalid-argument-type]
     except (TypeError, ValueError):
         return None
 

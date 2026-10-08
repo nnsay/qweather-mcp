@@ -44,6 +44,7 @@
 | `QWEATHER_PROJECT_ID` | 项目 ID，JWT `sub`（必填） |
 | `QWEATHER_CREDENTIAL_ID` | 凭据 ID，JWT `kid`（必填） |
 | `QWEATHER_PRIVATE_KEY_PATH` | Ed25519 私钥路径，默认 `~/.ssh/ed25519-private.pem` |
+| `QWEATHER_ONLY_FREE` | 设为 `1`/`true`/`yes` 时仅暴露有免费额度的 API（台风、海洋/潮汐无免费额度，请求即计费，会被隐藏）；默认关闭 |
 
 私钥只存在于文件系统（`~/.ssh/`），不进任何客户端配置文件、不进 LLM 上下文；客户端配置里只有 host 和两个非机密 ID。
 

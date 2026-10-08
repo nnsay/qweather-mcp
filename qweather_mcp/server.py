@@ -11,10 +11,25 @@ from mcp.server import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
 from qweather_mcp.client import QWeatherClient, get_client
-from qweather_mcp.config import QWeatherConfigError
+from qweather_mcp.config import QWeatherConfigError, load_config
 from qweather_mcp.formatting import build_report
 
 mcp = MCPServer("qweather")
+
+# 无免费额度的工具 (台风 + 海洋/潮汐, 请求即计费), only_free 时启动即摘除。
+PAID_TOOLS = (
+    "get_storm_list",
+    "get_storm_track",
+    "get_storm_forecast",
+    "get_tide",
+)
+
+
+def apply_only_free() -> None:
+    """only_free 配置生效: 移除无免费额度的工具 (须在 mcp.run 之前调用)。"""
+    if load_config().only_free:
+        for name in PAID_TOOLS:
+            mcp.remove_tool(name)
 
 
 async def _located(location: str) -> tuple[QWeatherClient, dict]:
@@ -404,6 +419,7 @@ def main() -> None:
 
     try:
         get_client()  # 提前校验配置, 失败信息直接可读
+        apply_only_free()
     except QWeatherConfigError as e:
         raise SystemExit(str(e)) from e
 

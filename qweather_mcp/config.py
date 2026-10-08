@@ -4,6 +4,9 @@ QWEATHER_API_HOST          专属 API host, 如 your-host.re.qweatherapi.com (�
 QWEATHER_PROJECT_ID        项目 ID (JWT sub, 必填)
 QWEATHER_CREDENTIAL_ID     凭据 ID (JWT kid, 必填)
 QWEATHER_PRIVATE_KEY_PATH  Ed25519 私钥路径 (默认 ~/.ssh/ed25519-private.pem)
+QWEATHER_ONLY_FREE         "1"/"true"/"yes" 时仅暴露有免费额度的 API (默认 false)。
+                           台风与海洋/潮汐两组无免费额度, 请求即计费
+                           (https://dev.qweather.com/docs/finance/pricing/)
 """
 
 import os
@@ -25,6 +28,7 @@ class QWeatherConfig:
     project_id: str  # JWT sub
     credential_id: str  # JWT kid
     private_key_path: Path
+    only_free: bool = False  # True: 不暴露无免费额度的付费工具 (台风/海洋)
 
     @property
     def api_base_url(self) -> str:
@@ -57,4 +61,6 @@ def load_config() -> QWeatherConfig:
         project_id=os.environ["QWEATHER_PROJECT_ID"],
         credential_id=os.environ["QWEATHER_CREDENTIAL_ID"],
         private_key_path=private_key,
+        only_free=os.environ.get("QWEATHER_ONLY_FREE", "").lower()
+        in ("1", "true", "yes"),
     )

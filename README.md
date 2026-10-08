@@ -44,6 +44,7 @@ Endpoint-to-docs mapping lives in [`docs/`](docs/). Adding a new API = one metho
 | `QWEATHER_PROJECT_ID` | Project ID, JWT `sub` (required) |
 | `QWEATHER_CREDENTIAL_ID` | Credential ID, JWT `kid` (required) |
 | `QWEATHER_PRIVATE_KEY_PATH` | Ed25519 private key path, default `~/.ssh/ed25519-private.pem` |
+| `QWEATHER_ONLY_FREE` | Set to `1`/`true`/`yes` to expose only APIs with a free tier (typhoon and ocean/tide have no free tier — every request is billed — so they are hidden); off by default |
 
 The private key never leaves the filesystem: no client config file, no LLM context. Only the host and the two non-secret IDs live in client configs.
 

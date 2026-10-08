@@ -77,6 +77,13 @@
         "command": "uv run qweather-mcp --transport streamable-http",
         "cwd": "{projectRoot}"
       }
+    },
+    "publish": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv build --out-dir dist && uv publish dist/*",
+        "cwd": "{projectRoot}"
+      }
     }
   },
   "tags": [],

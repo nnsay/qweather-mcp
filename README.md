@@ -50,7 +50,13 @@ The private key never leaves the filesystem: no client config file, no LLM conte
 
 ## Run
 
-Install as a global tool:
+**Install from PyPI** (recommended):
+
+```bash
+uv tool install nnsay-qweather-mcp
+```
+
+**Install from source**:
 
 ```bash
 uv tool install .
@@ -95,7 +101,7 @@ uv run qweather-mcp --transport streamable-http   # 127.0.0.1:8111/mcp by defaul
 
 **Shared-service mode**: run `qweather-mcp --transport streamable-http --host 0.0.0.0 --port 8111`, then register `http://127.0.0.1:8111/mcp` in any client that speaks streamable-http (e.g. LangChain/LangGraph `load_mcp_tools`). Network isolation (cluster-internal only) is recommended for deployments.
 
-**Container deployment**: `uv tool install .` (or pip install) inside the image, run `qweather-mcp --transport streamable-http`; config all via container env, mount the private key as a secret and point `QWEATHER_PRIVATE_KEY_PATH` at it.
+**Container deployment**: `uv tool install nnsay-qweather-mcp` (or pip install `nnsay-qweather-mcp`) inside the image, run `qweather-mcp --transport streamable-http`; config all via container env, mount the private key as a secret and point `QWEATHER_PRIVATE_KEY_PATH` at it.
 
 ## License
 

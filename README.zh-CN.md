@@ -50,7 +50,13 @@
 
 ## 运行
 
-安装为全局工具：
+**从 PyPI 安装**（推荐）：
+
+```bash
+uv tool install nnsay-qweather-mcp
+```
+
+**从源码安装**：
 
 ```bash
 uv tool install .
@@ -95,7 +101,7 @@ uv run qweather-mcp --transport streamable-http   # 默认 127.0.0.1:8111/mcp
 
 **共享服务模式**：运行 `qweather-mcp --transport streamable-http --host 0.0.0.0 --port 8111`，在支持 streamable-http 的客户端（如 LangChain/LangGraph `load_mcp_tools`）里注册 `http://127.0.0.1:8111/mcp`。生产部署建议做网络隔离（仅集群内可达）。
 
-**容器部署**：容器内 `uv tool install .`（或 pip install）后运行 `qweather-mcp --transport streamable-http`；配置全走容器 env，私钥文件挂载 secret 后用 `QWEATHER_PRIVATE_KEY_PATH` 指向。
+**容器部署**：容器内 `uv tool install nnsay-qweather-mcp`（或 pip install `nnsay-qweather-mcp`）后运行 `qweather-mcp --transport streamable-http`；配置全走容器 env，私钥文件挂载 secret 后用 `QWEATHER_PRIVATE_KEY_PATH` 指向。
 
 ## 许可证
 

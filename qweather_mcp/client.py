@@ -28,6 +28,8 @@ GeoAPI (docs/geoapi.md):
   - 日出日落      GET /v7/astronomy/sun
   - 月升月落月相  GET /v7/astronomy/moon
   - 太阳高度角    GET /v7/astronomy/solar-elevation-angle
+太阳辐射 (docs/solar-radiation.md):
+  - 太阳辐射预报  GET /solarradiation/v1/forecast/{lat}/{lon}
 预警 (docs/warning.md):
   - 实时天气预警  GET /weatheralert/v1/current/{lat}/{lon}
 """
@@ -373,6 +375,33 @@ class QWeatherClient:
             tz=tz,
             alt=str(alt),
         )
+
+    async def get_solar_radiation(
+        self,
+        lat: str,
+        lon: str,
+        *,
+        hours: int = 24,
+        interval: int = 60,
+        extra: str | None = None,
+        local_time: bool = False,
+    ) -> dict:
+        """太阳辐射预报 (未来 72 小时, 逐 15 分钟): DNI / DHI / GHI 与太阳角度。
+
+        extra 为空 / "weather" / "poa" / "weather,poa"; poa 需 tilt+azimuth。
+        """
+        params: dict[str, str | int] = {
+            "hours": hours,
+            "interval": interval,
+            "localTime": "true" if local_time else "false",
+        }
+        if extra:
+            params["extra"] = extra
+        data = await self._get(f"/solarradiation/v1/forecast/{lat}/{lon}", **params)
+        return {
+            "tag": data.get("metadata", {}).get("tag"),
+            "forecasts": data.get("forecasts") or [],
+        }
 
     async def get_weather_alerts(
         self, lat: str, lon: str, *, local_time: bool = False

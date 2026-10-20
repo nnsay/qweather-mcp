@@ -16,12 +16,13 @@ from qweather_mcp.formatting import build_report
 
 mcp = MCPServer("qweather")
 
-# 无免费额度的工具 (台风 + 海洋/潮汐, 请求即计费), only_free 时启动即摘除。
+# 无免费额度的工具 (台风 / 海洋潮汐 / 太阳辐射, 请求即计费), only_free 时启动即摘除。
 PAID_TOOLS = (
     "get_storm_list",
     "get_storm_track",
     "get_storm_forecast",
     "get_tide",
+    "get_solar_radiation",
 )
 
 
@@ -368,6 +369,44 @@ async def get_solar_elevation_angle(
     return await client.get_solar_elevation_angle(
         target, date or _today(), time, resolved_tz, alt
     )
+
+
+@mcp.tool()
+async def get_solar_radiation(
+    location: str,
+    hours: int = 24,
+    interval: int = 60,
+    extra: str | None = None,
+    tilt: int | None = None,
+    azimuth: int | None = None,
+    local_time: bool = False,
+) -> dict:
+    """太阳辐射预报 (全球任意坐标, 未来 72 小时, 15 分钟间隔, 1 公里分辨率):
+    法向直接辐照 DNI、散射水平面辐照 DHI、总水平面辐照 GHI 及太阳方位角/高度角。
+    付费接口 (无免费额度)。
+
+    Args:
+        location: 城市名、LocationID, 或 "经度,纬度", 如 "北京" / "116.41,39.92"
+        hours: 预报小时数 1-72, 默认 24
+        interval: 时间间隔 15 / 30 / 60 分钟, 默认 60
+        extra: "weather" (附带温度/风速/湿度)、"poa" (阵列平面辐照, 需同时传
+            tilt 和 azimuth)、或 "weather,poa"; 默认不附带
+        tilt: 光伏阵列倾斜角 0-90, poa 时必传
+        azimuth: 光伏阵列方位角 0-359 (0 = 正北), poa 时必传
+        local_time: True 返回当地时间, 默认 UTC
+    """
+    if "poa" in (extra or "") and (tilt is None or azimuth is None):
+        raise ToolError("extra 含 poa 时必须同时传 tilt (0-90) 和 azimuth (0-359)")
+    client, city = await _located(location)
+    data = await client.get_solar_radiation(
+        city["lat"],
+        city["lon"],
+        hours=max(1, min(72, hours)),
+        interval=interval if interval in (15, 30, 60) else 60,
+        extra=extra,
+        local_time=local_time,
+    )
+    return {"city": _city_brief(city), **data}
 
 
 @mcp.tool()

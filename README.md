@@ -27,6 +27,7 @@ A [QWeather](https://www.qweather.com/) MCP server built on the official `mcp` S
 | `get_sunrise_sunset(location, date?)` | Sunrise / sunset times | Astronomy: sunrise & sunset (60 days) |
 | `get_moon(location, date?)` | Moonrise / moonset + hourly phases | Astronomy: moonrise, moonset & phase (60 days) |
 | `get_solar_elevation_angle(location, time, date?, tz?, alt?)` | Solar elevation / azimuth | Astronomy: solar elevation angle |
+| `get_solar_radiation(location, hours?, interval?, extra?, tilt?, azimuth?, local_time?)` | DNI / DHI / GHI + solar angle (optional weather, plane-of-array) | Solar radiation: 72h forecast (paid) |
 | `get_weather_alerts(location, local_time?)` | Active official warning list | Weather warnings (most countries worldwide) |
 | `get_weather_report(location)` | Ready-to-send Markdown (today's overview + 3-day forecast + tips) | Push / notification scenarios |
 
@@ -44,7 +45,7 @@ Endpoint-to-docs mapping lives in [`docs/`](docs/). Adding a new API = one metho
 | `QWEATHER_PROJECT_ID` | Project ID, JWT `sub` (required) |
 | `QWEATHER_CREDENTIAL_ID` | Credential ID, JWT `kid` (required) |
 | `QWEATHER_PRIVATE_KEY_PATH` | Ed25519 private key path, default `~/.ssh/ed25519-private.pem` |
-| `QWEATHER_ONLY_FREE` | Set to `1`/`true`/`yes` to expose only APIs with a free tier (typhoon and ocean/tide have no free tier — every request is billed — so they are hidden); off by default |
+| `QWEATHER_ONLY_FREE` | Set to `1`/`true`/`yes` to expose only APIs with a free tier (typhoon, ocean/tide and solar radiation have no free tier — every request is billed — so they are hidden); off by default |
 
 The private key never leaves the filesystem: no client config file, no LLM context. Only the host and the two non-secret IDs live in client configs.
 

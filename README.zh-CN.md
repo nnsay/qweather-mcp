@@ -27,6 +27,7 @@
 | `get_sunrise_sunset(location, date?)` | 日出/日落时间 | 天文·日出日落（60 天） |
 | `get_moon(location, date?)` | 月升/月落 + 逐小时月相 | 天文·月相（60 天） |
 | `get_solar_elevation_angle(location, time, date?, tz?, alt?)` | 太阳高度角/方位角 | 天文·太阳高度角 |
+| `get_solar_radiation(location, hours?, interval?, extra?, tilt?, azimuth?, local_time?)` | DNI/DHI/GHI + 太阳角度（可选天气、阵列平面辐照） | 太阳辐射·72 小时预报（付费） |
 | `get_weather_alerts(location, local_time?)` | 生效中的官方预警列表 | 预警（全球多数国家） |
 | `get_weather_report(location)` | 成品 Markdown（今日速览 + 三日预报 + 生活提示） | 推送、通知场景直接发送 |
 
@@ -44,7 +45,7 @@
 | `QWEATHER_PROJECT_ID` | 项目 ID，JWT `sub`（必填） |
 | `QWEATHER_CREDENTIAL_ID` | 凭据 ID，JWT `kid`（必填） |
 | `QWEATHER_PRIVATE_KEY_PATH` | Ed25519 私钥路径，默认 `~/.ssh/ed25519-private.pem` |
-| `QWEATHER_ONLY_FREE` | 设为 `1`/`true`/`yes` 时仅暴露有免费额度的 API（台风、海洋/潮汐无免费额度，请求即计费，会被隐藏）；默认关闭 |
+| `QWEATHER_ONLY_FREE` | 设为 `1`/`true`/`yes` 时仅暴露有免费额度的 API（台风、海洋/潮汐、太阳辐射无免费额度，请求即计费，会被隐藏）；默认关闭 |
 
 私钥只存在于文件系统（`~/.ssh/`），不进任何客户端配置文件、不进 LLM 上下文；客户端配置里只有 host 和两个非机密 ID。
 

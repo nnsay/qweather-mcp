@@ -37,6 +37,16 @@
       },
       "cache": true
     },
+    "dockerize": {
+      "executor": "@nxlv/python:run-commands",
+      "dependsOn": ["build"],
+      "outputs": [],
+      "options": {
+        "command": "docker build -t al-qweather-mcp:latest .",
+        "cwd": "{projectRoot}"
+      },
+      "cache": false
+    },
     "lint": {
       "executor": "@nxlv/python:ruff-check",
       "outputs": [],

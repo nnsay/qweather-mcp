@@ -1,0 +1,9 @@
+# 构建物 dist (wheel) 要进镜像, 其余生成物排除
+**/htmlcov
+**/coverage
+coverage.xml
+**/__pycache__
+**/.pytest_cache
+docs
+.venv
+.DS_Store

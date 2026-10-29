@@ -1,6 +1,6 @@
 # qweather-mcp 生产镜像: 构建 (uv build, 见 nx dockerize → build) 的 wheel → 轻量运行时。
 # 运行: streamable-http, agent-api 经 MCP_SERVERS 指 http://qweather-mcp:8111/mcp
-FROM docker.m.daocloud.io/library/python:3.12-slim-bookworm
+FROM docker.m.daocloud.io/library/python:3.14-slim-bookworm
 COPY dist/nnsay_qweather_mcp-*.whl /tmp/
 RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ /tmp/nnsay_qweather_mcp-*.whl \
     && rm /tmp/nnsay_qweather_mcp-*.whl

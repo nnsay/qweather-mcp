@@ -18,7 +18,7 @@ addopts = """
 name = "nnsay-qweather-mcp"
 version = "1.0.0"
 description = "QWeather MCP server: stdio / streamable-http dual transport, JWT auth, 21 tools"
-requires-python = ">=3.12,<4"
+requires-python = ">=3.14,<4"
 readme = 'README.md'
 license = "MIT"
 license-files = ["LICENSE"]
